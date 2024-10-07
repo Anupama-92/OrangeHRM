@@ -7,4 +7,4 @@ class Config:
     DB_PASSWORD = "CDev011@gfh"
     DB_NAME = "Anupama"
     API_ENDPOINT = "https://opensource-demo.orangehrmlive.com/auth/validate"
-    EXCEL_PATH = "Test_Data/Test_Data.xlsx"  # Excel file path for data-driven testing
+    EXCEL_PATH = "test_data/test_data.xlsx"  # Excel file path for data-driven testing

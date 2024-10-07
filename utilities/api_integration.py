@@ -1,5 +1,5 @@
 import requests
-from Config.Config import Config
+from config.config import Config
 
 
 def api_login(username, password):

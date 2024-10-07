@@ -1,4 +1,6 @@
 # keywords/action_keywords.py
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -10,6 +12,7 @@ class ActionKeywords:
 
     def open_browser(self, url):
         self.driver.get(url)
+        time.sleep(3)
 
     def enter_username(self, locator_type, locator_value, input_data):
         element = self._find_element(locator_type, locator_value)

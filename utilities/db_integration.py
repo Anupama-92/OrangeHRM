@@ -1,5 +1,5 @@
 import pymssql
-from Config.Config import Config
+from config.config import Config
 
 
 def get_user_credentials():

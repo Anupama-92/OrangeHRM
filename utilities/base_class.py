@@ -1,7 +1,7 @@
 # utilities/base_class.py
 import os
 import datetime
-from Config.Config import Config
+from config.config import Config
 
 class BaseClass:
     def capture_screenshot(self, screenshot_name):

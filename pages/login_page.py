@@ -1,22 +1,49 @@
+import time
+
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from keywords.action_keywords import ActionKeywords
+from utilities.web_driver_singleton import WebDriverSingleton
 
 
 class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.username_input = (By.ID, "txtUsername")
-        self.password_input = (By.ID, "txtPassword")
-        self.login_button = (By.ID, "btnLogin")
-        self.welcome_message = (By.ID, "welcome")
+    def __init__(self, db_credentials=None):
+        """
+        Initialize ActionKeywords class with WebDriver instance and optional database credentials.
 
-    def enter_username(self, username):
-        self.driver.find_element(*self.username_input).send_keys(username)
+        :param driver: WebDriver instance
+        :param db_credentials: Optional dictionary containing username and password from the database.
+        """
+        self.driver = WebDriverSingleton.get_instance()
+        self.action_keywords = ActionKeywords()
+        self.db_username = db_credentials['username'] if db_credentials else None
+        self.db_password = db_credentials['password'] if db_credentials else None
+        time.sleep(3)
 
-    def enter_password(self, password):
-        self.driver.find_element(*self.password_input).send_keys(password)
+    def open_browser(self, url):
+        print(f"Opening browser with URL: {url}")
+        self.driver.get(url)
+        time.sleep(3)
 
-    def click_login(self):
-        self.driver.find_element(*self.login_button).click()
+    def enter_username(self, locator_type, locator_value, input_data):
+        # If input_data is empty, use username from database
+        input_value = input_data if input_data else self.db_username
+        print(f"Entering username: {input_value}")
+        element = self.action_keywords.find_element(locator_type, locator_value)
+        element.send_keys(input_value)
 
-    def get_welcome_message(self):
-        return self.driver.find_element(*self.welcome_message).text
+    def enter_password(self, locator_type, locator_value, input_data):
+        # If input_data is empty, use password from database
+        input_value = input_data if input_data else self.db_password
+        print(f"Entering password: {input_value}")
+        element = self.action_keywords.find_element(locator_type, locator_value)
+        element.send_keys(input_value)
+
+    def click_login(self, locator_type, locator_value):
+        wait = WebDriverWait(self.driver, 10)  # Wait up to 10 seconds
+        element = self.action_keywords.find_element(locator_type, locator_value)
+        element.click()
+        time.sleep(3)
+        print("Success")
+
+

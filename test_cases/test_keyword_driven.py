@@ -3,18 +3,20 @@ import pytest
 import requests
 from selenium import webdriver
 from config.config import Config
+from pages.dashboard_page import DashboardPage
+from pages.login_page import LoginPage
 from utilities.excel_util import ExcelUtil
 from keywords.action_keywords import ActionKeywords
 from utilities.base_class import BaseClass
 from utilities.db_integration import get_user_credentials  # Import DB integration function
 from utilities.api_integration import api_login  # Import the API login function
+from utilities.web_driver_singleton import WebDriverSingleton
 
 
 @pytest.fixture(scope="class")
 def setup(request):
     """Setup method to initialize WebDriver."""
-    driver = webdriver.Chrome()
-    driver.maximize_window()
+    driver = WebDriverSingleton.get_instance()
     request.cls.driver = driver
     yield
     driver.quit()
@@ -58,7 +60,8 @@ class TestKeywordDriven(BaseClass):
         row_count = excel_util.get_row_count()
         print(f"Total rows in Excel: {row_count}")
 
-        action_keywords = ActionKeywords(self.driver)
+        login = LoginPage(self.driver, db_credentials=credentials)
+        dashboard = DashboardPage(self.driver)
 
         for row in range(2, row_count + 1):  # Start from the second row assuming the first row is the header
             action = excel_util.get_cell_value(row, 2)
@@ -73,15 +76,15 @@ class TestKeywordDriven(BaseClass):
             # Step 5: Perform actions based on the Excel sheet's keyword-driven approach
             if action and locator_type and locator_value:
                 if action.lower() == "open_browser":
-                    action_keywords.open_browser(locator_value)  # Pass URL directly from Excel
+                    login.open_browser(locator_value)  # Pass URL directly from Excel
                 elif action.lower() == "enter_username":
-                    action_keywords.enter_username(locator_type, locator_value, username)  # Use fetched username
+                    login.enter_username(locator_type, locator_value, username)  # Use fetched username
                 elif action.lower() == "enter_password":
-                    action_keywords.enter_password(locator_type, locator_value, password)  # Use fetched password
+                    login.enter_password(locator_type, locator_value, password)  # Use fetched password
                 elif action.lower() == "click_login":
-                    action_keywords.click_login(locator_type, locator_value)
+                    login.click_login(locator_type, locator_value)
                 elif action.lower() == "verify_login":
-                    action_keywords.verify_login(locator_type, locator_value, value)
+                    dashboard.verify_login(locator_type, locator_value, value)
                     self.capture_screenshot("Login_Success")
 
         # Step 6: If the script reaches this point, it means the web login was successful.

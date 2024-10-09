@@ -1,10 +1,8 @@
 # utilities/login_helper.py
 
-
 from utilities.db_integration import get_user_credentials
 from utilities.api_integration import api_login
 from config.config import Config
-from pages.dashboard_page import DashboardPage
 from pages.login_page import LoginPage
 from utilities.excel_util import ExcelUtil
 
@@ -29,7 +27,6 @@ def perform_login():
     excel_util = ExcelUtil(Config.EXCEL_PATH)
     print(f"Excel file path: {Config.EXCEL_PATH}")
 
-    # Assuming the Excel file has specific cells for username and password (e.g., row 2, column 5 for username and row 3, column 5 for password)
     username_cell = (3, 5)  # Update this as per your Excel file structure
     password_cell = (4, 5)  # Update this as per your Excel file structure
 
@@ -43,6 +40,7 @@ def perform_login():
     print(f"Total rows in Excel: {row_count}")
 
     login = LoginPage(db_credentials=credentials)
+
     actions = []  # To hold actions and locators for verification
     for row in range(2, row_count + 1):  # Start from the second row assuming the first row is the header
         action = excel_util.get_cell_value(row, 2)
@@ -54,7 +52,7 @@ def perform_login():
         print(
             f"Row {row} -> Action: {action}, LocatorType: {locator_type}, LocatorValue: {locator_value}, InputData: {value}")
 
-        # Step 5: Perform actions based on the Excel sheet's keyword-driven approach
+        # Perform actions based on the Excel sheet's keyword-driven approach
         if action and locator_type and locator_value:
             if action.lower() == "open_browser":
                 login.open_browser(locator_value)  # Pass URL directly from Excel

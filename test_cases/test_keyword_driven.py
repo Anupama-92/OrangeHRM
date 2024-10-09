@@ -30,10 +30,17 @@ class TestKeywordDriven(BaseClass):
         """Test case for Keyword-Driven Framework using Excel, Database, and API validation."""
         actions = perform_login()
         dashboard = DashboardPage()
-        # Iterate through the actions returned from perform_login for verification
-        for locator_type, locator_value, expected_value in actions:
-            dashboard.verify_login(locator_type, locator_value, expected_value)
-            self.capture_screenshot("Login_Success")
+        log = self.get_logger("Test_Execution")
+        try:
+            # Iterate through the actions returned from perform_login for verification
+            for locator_type, locator_value, expected_value in actions:
+                dashboard.verify_login(locator_type, locator_value, expected_value)
+                self.capture_screenshot("Login_Success")
 
-        # Step 6: If the script reaches this point, it means the web login was successful.
-        print("Web login successful.")
+            # Step 6: If the script reaches this point, it means the web login was successful.
+            log.info("Web login successful.")
+
+        except Exception as e:
+            self.capture_screenshot("Test login failure")
+            log.error(f"Test case failed: {e}")
+            raise

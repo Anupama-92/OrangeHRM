@@ -25,7 +25,6 @@ def setup(request):
     yield
     driver.quit()
 
-
 @pytest.mark.usefixtures("setup")
 class TestKeywordDriven(BaseClass):
 

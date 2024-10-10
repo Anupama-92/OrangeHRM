@@ -5,6 +5,7 @@ from utilities.api_integration import api_login
 from config.config import Config
 from pages.login_page import LoginPage
 from utilities.excel_util import ExcelUtil
+from utilities.base_class import BaseClass
 
 
 def perform_login():
@@ -64,6 +65,7 @@ def perform_login():
                 login.click_login(locator_type, locator_value)
             elif action.lower() == "verify_login":
                 actions.append((locator_type, locator_value, value))
+
 
     print("Login actions completed.")
     return actions  # Return the list of actions for verification

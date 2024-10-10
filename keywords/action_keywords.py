@@ -18,8 +18,8 @@ class ActionKeywords:
             return self.driver.find_element(By.ID, locator_value)
         elif locator_type.lower() == "name":
             return self.driver.find_element(By.NAME, locator_value)
-        elif locator_type.lower() == "xpath":
-            return self.driver.find_element(By.XPATH, locator_value)
+        # elif locator_type.lower() == "xpath":
+        #     return self.driver.find_element(By.XPATH, locator_value)
         elif locator_type == "css":
             return self.driver.find_element(By.CSS_SELECTOR, locator_value)
         elif locator_type == "link_text":

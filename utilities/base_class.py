@@ -14,21 +14,14 @@ class BaseClass:
         self.driver.save_screenshot(screenshot_path)
         print(f"Screenshot saved at: {screenshot_path}")
 
-    def get_logger(self,logfile_name):
-        # Create a timestamped log file path
-        current_time2 = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        logfile_path = os.path.join(Config.LOGFILE_PATH, f"{logfile_name}_{current_time2}.log")
-
-        # Create a logger object using the function name
-        logger_name = inspect.stack()[1][3]
-        logger = logging.getLogger(logger_name)
-
-        # Check if the logger already has handlers to avoid duplicates
-        if not logger.hasHandlers():
-            file_handler = logging.FileHandler(logfile_path)
-            formatter = logging.Formatter("%(asctime)s :%(levelname)s : %(name)s :%(message)s")
-            file_handler.setFormatter(formatter)
-            logger.addHandler(file_handler)
-            logger.setLevel(logging.DEBUG)
-
+    def get_logger(self, logfile_name):
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        # Create a logger object
+        loggerName = inspect.stack()[1][3]
+        logger = logging.getLogger(loggerName)
+        fileHandler = logging.FileHandler(os.path.join(Config.LOGFILE_PATH,f"{logfile_name}_{current_time}.log"))
+        formatter = logging.Formatter("%(asctime)s :%(levelname)s : %(name)s :%(message)s")
+        fileHandler.setFormatter(formatter)
+        logger.addHandler(fileHandler)  # filehandler Object
+        logger.setLevel(logging.DEBUG)
         return logger

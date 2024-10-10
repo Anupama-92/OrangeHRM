@@ -1,4 +1,7 @@
 # test_cases/test_keyword_driven.py
+import datetime
+import os
+
 import pytest
 import requests
 from selenium import webdriver
@@ -43,4 +46,3 @@ class TestKeywordDriven(BaseClass):
         except Exception as e:
             self.capture_screenshot("Test login failure")
             log.error(f"Test case failed: {e}")
-            raise

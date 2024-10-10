@@ -11,3 +11,4 @@ class Config:
     DB_NAME = "Anupama"
     API_ENDPOINT = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate"
     EXCEL_PATH = os.path.abspath("test_data/test_data.xlsx")  # Excel file path for data-driven testing
+

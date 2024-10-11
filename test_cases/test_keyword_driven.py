@@ -17,14 +17,6 @@ from utilities.login_helper import perform_login
 from utilities.web_driver_singleton import WebDriverSingleton
 
 
-@pytest.fixture(scope="class")
-def setup(request):
-    """Setup method to initialize WebDriver."""
-    driver = WebDriverSingleton.get_instance()
-    request.cls.driver = driver
-    yield
-    driver.quit()
-
 @pytest.mark.usefixtures("setup")
 class TestKeywordDriven(BaseClass):
 
@@ -36,12 +28,17 @@ class TestKeywordDriven(BaseClass):
         try:
             # Iterate through the actions returned from perform_login for verification
             for locator_type, locator_value, expected_value in actions:
-                dashboard.verify_login(locator_type, locator_value, expected_value)
-                self.capture_screenshot("Login_Success")
+                actual_text = dashboard.verify_login(locator_type, locator_value)
+                assert actual_text == expected_value, \
+                    f"Test Failed: Expected '{expected_value}', but got '{actual_text}'"
+                # self.capture_screenshot("Login_Success")
+                log.info(
+                    f"Text verification passed for '{locator_value}'. Expected and Actual text: '{expected_value}'")
 
             # Step 6: If the script reaches this point, it means the web login was successful.
             log.info("Web login successful.")
 
         except Exception as e:
-            self.capture_screenshot("Test login failure")
+            # self.capture_screenshot("Test login failure")
             log.error(f"Test case failed: {e}")
+            raise e

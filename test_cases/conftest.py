@@ -10,6 +10,12 @@ driver = None
 from utilities.web_driver_singleton import WebDriverSingleton
 
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser_name", action="store", default="chrome"
+    )
+
+
 @pytest.fixture(scope="class")
 def setup(request):
     global driver
@@ -18,6 +24,7 @@ def setup(request):
     request.cls.driver = driver
     yield
     driver.quit()
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):

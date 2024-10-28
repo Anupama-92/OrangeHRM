@@ -1,0 +1,2 @@
+2024-10-15 12:40:56,438 :INFO : test_login :Text verification passed for '//h6[contains(@class, 'oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module') and text()='Dashboard']'. Expected and Actual text: 'Dashboard'
+2024-10-15 12:40:56,438 :INFO : test_login :Web login successful.

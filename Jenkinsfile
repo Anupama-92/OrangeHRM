@@ -1,75 +1,35 @@
 pipeline {
-    agent any  // The pipeline can run on any available Jenkins agent
-
-    environment {
-        // Define environment variables if needed (e.g., paths to drivers, credentials, etc.)
-        WORKSPACE = "${env.WORKSPACE}"
-        REPORT_PATH = "reports"
-        SCREENSHOTS_PATH = "screenshots"
-    }
-
+    agent any
     stages {
-        // Stage 1: Checkout the source code from GitHub or any other SCM
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                git 'https://github.com/Anupama-92/OrangeHRM.git'
+                echo 'Building...'
+                // Add your build commands here, e.g., 'mvn clean package' for a Maven project
             }
         }
-
-        // Stage 2: Install dependencies (e.g., selenium, pytest, etc.)
-        stage('Install Dependencies') {
+        stage('Test') {
             steps {
-                script {
-                    // Install required packages for the Selenium framework
-                    if (isUnix()) {
-                        sh 'pip install -r requirements.txt'
-                    } else {
-                        bat 'pip install -r requirements.txt'
-                    }
-                }
+                echo 'Testing...'
+                // Add test commands here, e.g., 'mvn test'
             }
         }
-
-        // Stage 3: Execute tests
-        stage('Run Selenium Tests') {
+        stage('Deploy') {
             steps {
-                script {
-                    // Running Selenium tests with pytest, capturing the output in JUnit XML and HTML report
-                    if (isUnix()) {
-                        sh 'pytest test_cases/test_keyword_driven.py --html=reports/report.html --junitxml=results.xml'
-                    } else {
-                        bat 'pytest test_cases/test_keyword_driven.py --html=reports/report.html --junitxml=results.xml'
-                    }
-                }
-            }
-        }
-
-        // Stage 4: Archive results and reports
-        stage('Archive Results') {
-            steps {
-                // Archive JUnit test results
-                junit 'results.xml'
-                
-                // Archive the HTML report
-                publishHTML (target: [
-                    reportDir: 'reports',    // Folder where reports are stored
-                    reportFiles: 'report.html',   // Name of the HTML file
-                    reportName: 'Selenium Test Report'
-                ])
+                echo 'Deploying...'
+                // Add deployment steps here
             }
         }
     }
-
-    // Post-build actions (optional)
     post {
         always {
-            // Always clean up workspace after build
-            cleanWs()
-
-            // If something went wrong, this will display a console message
-            failure {
-                echo 'The build failed!'
-            }
+            echo 'Cleaning up...'
+            // Add cleanup steps, e.g., deleting temporary files
+        }
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed.'
         }
     }
 }

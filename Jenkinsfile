@@ -12,7 +12,7 @@ pipeline {
         // Stage 1: Checkout the source code from GitHub or any other SCM
         stage('Checkout') {
             steps {
-                git 'https://your-repo-url.git'
+                git 'https://github.com/Anupama-92/OrangeHRM.git'
             }
         }
 

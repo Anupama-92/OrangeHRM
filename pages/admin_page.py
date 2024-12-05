@@ -47,3 +47,10 @@ class AdminPage:
     def click_save(self, locator_type, locator_value):
         element = self.action_keywords.find_element(locator_type, locator_value)
         element.click()
+
+    def click_nationalities(self, locator_type, locator_value):
+        element = WebDriverWait(self.driver, 10).until(
+              EC.element_to_be_clickable(self.action_keywords.find_element(locator_type, locator_value)))
+        element.click()
+        time.sleep(3)
+

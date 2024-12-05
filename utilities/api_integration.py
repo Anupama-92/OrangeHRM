@@ -43,15 +43,19 @@ def create_nationality(name):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    if response.status_code == 200:  # Assuming 200 indicates successful creation
-        print(f"User created successfully: {response.json()}")
-        return response.json()
+    if response.status_code == 200:
+        try:
+            response_data = response.json()
+            nationality_data = response_data.get("data", {})
+            nationality_id = nationality_data.get("id")
+            nationality_name = nationality_data.get("name")
+            return {"id": nationality_id, "name": nationality_name}
+        except KeyError as e:
+            return {"error": f"Unexpected response structure: {e}"}
     else:
-        print(f"Failed to create user. Status code: {response.status_code}, Response: {response.text}")
         return {"error": response.text}
 
 
-nationality_name = "Canadian"
-nationality_response = create_nationality(nationality_name)
-print(nationality_response)
+
+
 

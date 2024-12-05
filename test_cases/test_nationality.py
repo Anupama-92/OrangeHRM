@@ -17,8 +17,7 @@ class TestNationality(BaseClass):
         actions = perform_login()
         log = self.get_logger("TestUserManagement")
         log.info("Login performed successfully.")
-        nationality_name = "Automation123Test"
-        api_data = create_nationality(nationality_name)
+        api_data = create_nationality()
         print(api_data)
         # Navigate to the User Management page to get the web data
         excel_util = ExcelUtil(Config.EXCEL_PATH)
